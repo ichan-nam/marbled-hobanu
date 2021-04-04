@@ -32,12 +32,25 @@ class gpaStat {
   }
 }
 
-const reportInputElement = document.querySelector('header div input');
+const reportInput = document.querySelector('header div input');
 const wrongReportInputMsg = '실수가 있었던 거 같아요.\n처음부터 다시 성적표를 드래그해서 복사한 후 붙여넣어주세요.';
+const gpa = {
+  total: new gpaStat("total", [0, 0], 0, 0, 0),
+  types1: {
+    art: new gpaStat("art", [0, 0], 0, 0, 0),
+    major: new gpaStat("major", [0, 0], 0, 0, 0)
+  },
+  types2: {
+    cltr: new gpaStat("cltr", [0, 0], 0, 0, 0),
+    nonCltr: new gpaStat("nonCltr", [0, 0], 0, 0, 0)
+  },
+  types3: {},
+  semesters: []
+};
 
-// if reportInputElement is changed, the code below will be running
-reportInputElement.addEventListener('change', event => {
-  const tmpTokens = reportInputElement.value.split('\t');
+// if reportInput is changed, the code below will be running
+reportInput.addEventListener('change', event => {
+  const tmpTokens = reportInput.value.split('\t');
   
   // dragged range validation
   if (tmpTokens[0] !== '년도/학기' && !tmpTokens[0].startsWith('20')) {
@@ -60,19 +73,6 @@ reportInputElement.addEventListener('change', event => {
   let lastGpaSemestersStr = "";
   let lastGpaSemestersIdx = -1;
   const courses = [];
-  const gpa = {
-    total: new gpaStat("total", [0, 0], 0, 0, 0),
-    types1: {
-      art: new gpaStat("art", [0, 0], 0, 0, 0),
-      major: new gpaStat("major", [0, 0], 0, 0, 0)
-    },
-    types2: {
-      cltr: new gpaStat("cltr", [0, 0], 0, 0, 0),
-      nonCltr: new gpaStat("nonCltr", [0, 0], 0, 0, 0)
-    },
-    types3: {},
-    semesters: []
-  };
 
   for (; startIdx < tmpTokens.length - 1; startIdx += 5) {
     if (!tmpTokens[startIdx].startsWith('20')) {
@@ -105,7 +105,7 @@ reportInputElement.addEventListener('change', event => {
       setGpaCredits(gpa, "absoluteCredit", tmpCourse, lastGpaSemestersIdx);
     } else if (tmpCourse.grade === 'F') {
       setGpaCredits(gpa, "garbageCredit", tmpCourse, lastGpaSemestersIdx);
-    }  else {
+    } else {
       setGpaCredits(gpa, "relativeCredit", tmpCourse, lastGpaSemestersIdx);
       setGpaPointSums(gpa, tmpCourse, lastGpaSemestersIdx);
     }
@@ -126,6 +126,8 @@ reportInputElement.addEventListener('change', event => {
   for (let i = 0; i < gpa.semesters.length; i++)
     console.log(gpa.semesters[i].id + ': ' + gpa.semesters[i].getGpa(false));
   */
+
+  updateValues();
 });
 
 function setGpaCredits(gpa, whichCredit, tmpCourse, lastGpaSemestersIdx) {
@@ -204,3 +206,77 @@ function convertGradeToPoint(grade, option) {
     else if (grade === 'D-') return 0.7;
   }
 }
+
+// update all values by input
+function updateValues() {
+  document.querySelector('#value1').innerText = gpa.total.relativeCredit + gpa.total.absoluteCredit;
+  document.querySelector('#value2').innerText = gpa.total.getGpa(false).toFixed(2);
+  document.querySelector('#value3').innerText = gpa.total.getGpa(true).toFixed(2);
+  updateDiagnosis();
+
+  document.querySelector('#value5').innerText = gpa.types1.art.relativeCredit + gpa.types1.art.absoluteCredit;
+  document.querySelector('#value6').innerText = gpa.types1.major.relativeCredit + gpa.types1.major.absoluteCredit;
+  document.querySelector('#value9').innerText = gpa.types2.cltr.relativeCredit + gpa.types2.cltr.absoluteCredit;
+  document.querySelector('#value10').innerText = gpa.types2.nonCltr.relativeCredit + gpa.types2.nonCltr.absoluteCredit;
+  updateBoard(2);
+}
+
+// update diagnosis value by 4.5 GPA
+function updateDiagnosis() {
+  const gpaEndsWith5 = parseFloat(document.querySelector('#value3').innerText);
+  let diagnosis;
+
+  if (document.querySelector('#option1').checked) {
+    if (gpaEndsWith5 >= 4.0) diagnosis = '🥰';
+    else if (gpaEndsWith5 >= 3.8) diagnosis = '😃';
+    else if (gpaEndsWith5 >= 3.5) diagnosis = '🙂';
+    else diagnosis = '🤡'; // gpaEndsWith3 < 3.5
+  } else if (document.querySelector('#option2').checked) {
+    if (gpaEndsWith5 >= 3.8) diagnosis = '🥰';
+    else if (gpaEndsWith5 >= 3.5) diagnosis = '😃';
+    else if (gpaEndsWith5 >= 3.0) diagnosis = '🙂';
+    else diagnosis = '🤡'; // gpaEndsWith3 < 3.0
+  } else {
+    diagnosis = '선택plz';
+  }
+
+  document.querySelector('#value4').innerText = diagnosis;
+}
+
+function updateBoard(order) {
+  if (document.querySelector('header input').value === "") return;
+  // else
+  const bool = document.querySelector('#option' + (2 * order - 1)).checked ? false : true;
+
+  switch(order) {
+    case 2:
+      document.querySelector('#value7').innerText = gpa.types1.art.getGpa(bool);
+      document.querySelector('#value8').innerText = gpa.types1.major.getGpa(bool);
+      document.querySelector('#value11').innerText = gpa.types2.cltr.getGpa(bool);
+      document.querySelector('#value12').innerText = gpa.types2.nonCltr.getGpa(bool);
+      break;
+  }
+}
+
+const radioBtns = document.querySelectorAll('input[type="radio"]');
+
+// if radioBtn is clicked, the code below will be running
+radioBtns.forEach((value, key, parent) => {
+  value.addEventListener('change', event => {
+    if (event.target.id === 'option1' || event.target.id === 'option2') updateDiagnosis();
+    else if (event.target.id === 'option3' || event.target.id === 'option4') updateBoard(2);
+  });
+});
+
+const noticeBtns = document.querySelectorAll('.fa-question-circle');
+
+// if noticeBtn is clicked, the code below will be running
+noticeBtns.forEach((value, key, parent) => {
+  value.addEventListener('click', event => {
+    const noticeSection = document.querySelector("#notice" + event.target.dataset.order);
+    if (noticeSection.style.display === "") // display: none
+      noticeSection.style.display = "block";
+    else // noticeSection.style.display === "block"
+      noticeSection.style.display = "none";
+  });
+});

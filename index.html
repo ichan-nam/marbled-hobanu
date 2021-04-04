@@ -22,7 +22,254 @@
     </a>
   </header>
   <main>
-    main
+    <div class="outer-container">
+      <p class="board-title">
+        <i class="fas fa-award"></i>
+        Summary
+      </p>
+      <div class="inner-container">
+        <section class="board">
+          <div class=board-top-bottom>
+            <span>
+              <label for="option1">
+                <input type="radio" id="option1" name="selection1">
+                인문계
+              </label>
+            </span>
+            <span>
+              <label for="option2">
+                <input type="radio" id="option2" name="selection1">
+                자연계
+              </label>
+            </span>
+          </div>
+          <div class="article-container">
+            <article>
+              <p class="article-title">이수학점</p>
+              <p class="value" id="value1">140</p>
+            </article>
+            <article>
+              <p class="article-title">4.3 평점</p>
+              <p class="value" id="value2">4.30</p>
+            </article>
+            <article>
+              <p class="article-title">4.5 평점</p>
+              <p class="value" id="value3">4.50</p>
+            </article>
+            <article>
+              <p class="article-title">진단</p>
+              <p class="value" id="value4">🐮</p>
+            </article>
+          </div>
+          <div class=board-top-bottom><i class="fas fa-question-circle" data-order="1"></i></div>
+        </section>
+        <section class="notice" id="notice1">
+          <ul>
+            <li>
+              F와 U는 이수학점에 포함되지 않습니다.
+              다만 F는 평점 계산에는 0점으로 반영됩니다.
+            </li>
+            <li>
+              4.5 평점은 <b>A+ 4.5, A0 4.25, A- 4.0, ... , D+ 1.5, D0 1.25, D- 1.0, F 0.0</b>으로 계산한 결과입니다.
+              실제 평점과 미세한 차이가 있을 수 있습니다.
+              공식 성적환산표는
+              <a href="https://www.knu.ac.kr/wbbs/wbbs/contents/index.action?menu_url=edu/academic03_03_04&menu_idx=44" target="_blank"><b>여기서</b></a>
+              확인해주세요.
+            </li>
+            <li>
+              진단 결과는 책 <i><b>인사담당자 100명의 비밀녹취록 (김도윤, 제갈현열 저)</b></i>에서 <b>대기업 서류전형 통과를 위한 스펙</b>을 참고했습니다.
+              기준은 아래에서 확인하실 수 있습니다.
+            </li>
+            <li>인문계 최소스펙 🙂: 평점 3.5/4.5, 토스 6급, 토익 700 이상</li>
+            <li>인문계 기본스펙 😃: 평점 3.8/4.5, 토스 7급, 토익 800 이상</li>
+            <li>인문계 안전스펙 🥰: 평점 4.0/4.5, 토스 7급, 토익 900 이상</li>
+            <li>자연계 최소스펙 🙂: 평점 3.0/4.5, 토스 5급, 토익 600 이상</li>
+            <li>자연계 기본스펙 😃: 평점 3.5/4.5, 토스 6급, 토익 700 이상</li>
+            <li>자연계 안전스펙 🥰: 평점 4.8/4.5, 토스 6급, 토익 700 이상</li>
+            <li>
+              행복은 성적 순이 아니라는 말을 믿어 의심치 않습니다.
+              <b>당신이 어떤 성적을 가지고 있든 정말로 행복하기를 바랍니다.</b>
+            </li>
+          </ul>
+        </section>
+      </div>
+    </div>
+    <div class="outer-container">
+      <p class="board-title">
+        <i class="fas fa-award"></i>
+        교양 & 전공 
+      </p>
+      <div class="inner-container">
+        <section class="board">
+          <div class=board-top-bottom>
+            <span>
+              <label for="option3">
+                <input type="radio" id="option3" name="selection2" checked="checked">
+                4.3
+              </label>
+            </span>
+            <span>
+              <label for="option4">
+                <input type="radio" id="option4" name="selection2">
+                4.5
+              </label>
+            </span>
+          </div>
+          <div class="article-container">
+            <article class="table-container">
+              <table>
+                <tr>
+                  <th></th>
+                  <th>교양</th>
+                  <th>전공</th>
+                </tr>
+                <tr>
+                  <td>이수학점</td>
+                  <td id="value5">50</td>
+                  <td id="value6">90</td>
+                </tr>
+                <tr>
+                  <td>평점</td>
+                  <td id="value7">4.30</td>
+                  <td id="value8">4.30</td>
+                </tr>
+              </table>
+            </article>
+            <article class="table-container">
+              <table>
+                <tr>
+                  <th></th>
+                  <th>CLTR</th>
+                  <th>Non-CLTR</th>
+                </tr>
+                <tr>
+                  <td>이수학점</td>
+                  <td id="value9">50</td>
+                  <td id="value10">90</td>
+                </tr>
+                <tr>
+                  <td>평점</td>
+                  <td id="value11">4.30</td>
+                  <td id="value12">4.30</td>
+                </tr>
+              </table>
+            </article>
+          </div>
+          <div class=board-top-bottom><i class="fas fa-question-circle" data-order="2"></i></div>
+        </section>
+        <section class="notice" id="notice2">
+          <ul>
+            <li>
+              <b>교양</b>은 교과구분에 '전공'이라는 단어가 포함되지 않은 과목입니다.
+              예) 교양, 자유선택, 기본소양, ...
+            </li>
+            <li>
+              <b>전공</b>은 교과구분에 '전공'이라는 단어가 포함된 과목입니다.
+              예) 전공, 복수전공, 부전공, 공학전공, 전공기반, ...
+            </li>
+            <li><b>CLTR</b>은 과목코드가 'CLTR'로 시작하는 과목입니다.</li>
+            <li><b>Non-CLTR</b>은 과목코드가 'CLTR'로 시작하지 않는 과목입니다.</li>
+          </ul>
+        </section>
+      </div>
+    </div>
+    <div class="outer-container">
+      <p class="board-title">
+        <i class="fas fa-award"></i>
+        교과구분별
+      </p>
+      <div class="inner-container">
+        <section class="board">
+          <div class=board-top-bottom>
+            <span>
+              <label for="option3">
+                <input type="radio" id="option5" name="selection3"checked="checked">
+                4.3
+              </label>
+            </span>
+            <span>
+              <label for="option4">
+                <input type="radio" id="option6" name="selection3">
+                4.5
+              </label>
+            </span>
+          </div>
+          <div class="article-container">
+            <article class="veil">
+              <p class="value">Waiting for your input...</p>
+            </article>
+            <article class="dynamic-table-container">
+              <table>
+                <tr>
+                  <th></th>
+                </tr>
+                <tr>
+                  <td>이수학점</td>
+                </tr>
+                <tr>
+                  <td>평점</td>
+                </tr>
+              </table>
+            </article>
+          </div>
+          <div class=board-top-bottom><i class="fas fa-question-circle" data-order="3"></i></div>
+        </section>
+        <section class="notice" id="notice3">
+          <ul>
+            <li>이수한 과목의 교과구분만 표시됩니다.</li>
+          </ul>
+        </section>
+      </div>
+    </div>
+    <div class="outer-container">
+      <p class="board-title">
+        <i class="fas fa-award"></i>
+        학기별
+      </p>
+      <div class="inner-container">
+        <section class="board">
+          <div class=board-top-bottom>
+            <span>
+              <label for="option3">
+                <input type="radio" id="option7" name="selection4"checked="checked">
+                4.3
+              </label>
+            </span>
+            <span>
+              <label for="option4">
+                <input type="radio" id="option8" name="selection4">
+                4.5
+              </label>
+            </span>
+          </div>
+          <div class="article-container">
+            <article class="veil">
+              <p class="value">Waiting for your input...</p>
+            </article>
+            <article class="dynamic-table-container">
+              <table>
+                <tr>
+                  <th></th>
+                </tr>
+                <tr>
+                  <td>이수학점</td>
+                </tr>
+                <tr>
+                  <td>평점</td>
+                </tr>
+              </table>
+            </article>
+          </div>
+          <div class=board-top-bottom><i class="fas fa-question-circle" data-order="4"></i></div>
+        </section>
+        <section class="notice" id="notice4">
+          <ul>
+            <li><b>S</b>는 여름 계절학기를 나타냅니다.</li>
+            <li><b>W</b>는 겨울 계절학기를 나타냅니다.</li>
+          </ul>
+        </section>
+      </div>
+    </div>
   </main>
   <footer>
     footer
