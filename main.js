@@ -25,31 +25,19 @@ class gpaStat {
   }
 
   getGpa(option) {
-    if (option) // true: 4.5
-      return Math.floor(this.pointSum.endsWith5 / (this.relativeCredit + this.garbageCredit) * 100) / 100.;
-    else // false: 4.3
-      return Math.floor(this.pointSum.endsWith3 / (this.relativeCredit + this.garbageCredit) * 100) / 100.;
+    const pointSum = option ? this.pointSum.endsWith5 : this.pointSum.endsWith3; // option is true: 4.5 / false: 4.3
+    return pointSum === 0 ? 'SU과목' : (Math.floor(pointSum / (this.relativeCredit + this.garbageCredit) * 100) / 100.).toFixed(2);
   }
 }
 
 const reportInput = document.querySelector('header div input');
 const wrongReportInputMsg = '실수가 있었던 거 같아요.\n처음부터 다시 성적표를 드래그해서 복사한 후 붙여넣어주세요.';
-const gpa = {
-  total: new gpaStat("total", [0, 0], 0, 0, 0),
-  types1: {
-    art: new gpaStat("art", [0, 0], 0, 0, 0),
-    major: new gpaStat("major", [0, 0], 0, 0, 0)
-  },
-  types2: {
-    cltr: new gpaStat("cltr", [0, 0], 0, 0, 0),
-    nonCltr: new gpaStat("nonCltr", [0, 0], 0, 0, 0)
-  },
-  types3: {},
-  semesters: []
-};
+let gpa;
 
 // if reportInput is changed, the code below will be running
 reportInput.addEventListener('change', event => {
+  initializeGpa();
+
   const tmpTokens = reportInput.value.split('\t');
   
   // dragged range validation
@@ -111,24 +99,24 @@ reportInput.addEventListener('change', event => {
     }
   }
 
-  /*
-  console.log('전체: ' + gpa.total.getGpa(false));
-  console.log('교양: ' + gpa.types1.art.getGpa(false));
-  console.log('전공: ' + gpa.types1.major.getGpa(false));
-  console.log('CLTR: ' + gpa.types2.cltr.getGpa(false));
-  console.log('CLTR 아닌 과목: ' + gpa.types2.nonCltr.getGpa(false));
-  console.log('교양: ' + gpa.types3['교양'].getGpa(false));
-  console.log('전공: ' + gpa.types3['전공'].getGpa(false));
-  console.log('자유선택: ' + gpa.types3['자유선택'].getGpa(false));
-  console.log('공학전공: ' + gpa.types3['공학전공'].getGpa(false));
-  console.log('전공기반: ' + gpa.types3['전공기반'].getGpa(false));
-  console.log('기본소양: ' + gpa.types3['기본소양'].getGpa(false));
-  for (let i = 0; i < gpa.semesters.length; i++)
-    console.log(gpa.semesters[i].id + ': ' + gpa.semesters[i].getGpa(false));
-  */
-
   updateValues();
 });
+
+function initializeGpa() {
+  gpa = {
+    total: new gpaStat("total", [0, 0], 0, 0, 0),
+    types1: {
+      art: new gpaStat("art", [0, 0], 0, 0, 0),
+      major: new gpaStat("major", [0, 0], 0, 0, 0)
+    },
+    types2: {
+      cltr: new gpaStat("cltr", [0, 0], 0, 0, 0),
+      nonCltr: new gpaStat("nonCltr", [0, 0], 0, 0, 0)
+    },
+    types3: {},
+    semesters: []
+  };
+}
 
 function setGpaCredits(gpa, whichCredit, tmpCourse, lastGpaSemestersIdx) {
   gpa.total[whichCredit] += tmpCourse.credit;
@@ -210,8 +198,8 @@ function convertGradeToPoint(grade, option) {
 // update all values by input
 function updateValues() {
   document.querySelector('#value1').innerText = gpa.total.relativeCredit + gpa.total.absoluteCredit;
-  document.querySelector('#value2').innerText = gpa.total.getGpa(false).toFixed(2);
-  document.querySelector('#value3').innerText = gpa.total.getGpa(true).toFixed(2);
+  document.querySelector('#value2').innerText = gpa.total.getGpa(false);
+  document.querySelector('#value3').innerText = gpa.total.getGpa(true);
   updateDiagnosis();
 
   document.querySelector('#value5').innerText = gpa.types1.art.relativeCredit + gpa.types1.art.absoluteCredit;
@@ -219,6 +207,17 @@ function updateValues() {
   document.querySelector('#value9').innerText = gpa.types2.cltr.relativeCredit + gpa.types2.cltr.absoluteCredit;
   document.querySelector('#value10').innerText = gpa.types2.nonCltr.relativeCredit + gpa.types2.nonCltr.absoluteCredit;
   updateBoard(2);
+
+  document.querySelectorAll('.veil').forEach((value, key, parent) => {
+    value.style.display = 'none';
+  });
+
+  updateBoard(3);
+  updateBoard(4);
+
+  document.querySelectorAll('.dynamic-table-container').forEach((value, key, parent) => {
+    value.style.display = 'block';
+  });
 }
 
 // update diagnosis value by 4.5 GPA
@@ -237,7 +236,7 @@ function updateDiagnosis() {
     else if (gpaEndsWith5 >= 3.0) diagnosis = '🙂';
     else diagnosis = '🤡'; // gpaEndsWith3 < 3.0
   } else {
-    diagnosis = '선택plz';
+    diagnosis = '계열선택👆';
   }
 
   document.querySelector('#value4').innerText = diagnosis;
@@ -255,6 +254,32 @@ function updateBoard(order) {
       document.querySelector('#value11').innerText = gpa.types2.cltr.getGpa(bool);
       document.querySelector('#value12').innerText = gpa.types2.nonCltr.getGpa(bool);
       break;
+    case 3:
+      document.querySelector('#dynamic-tr1').innerHTML = `<th></th>`;
+      document.querySelector('#dynamic-tr2').innerHTML = `<td>이수학점</td>`;
+      document.querySelector('#dynamic-tr3').innerHTML = `<td>평점</td>`;
+
+      let aGpaStat;
+      for (let key in gpa.types3) {
+        aGpaStat = gpa.types3[key];
+        document.querySelector('#dynamic-tr1').innerHTML += `<th>${aGpaStat.id}</th>`;
+        document.querySelector('#dynamic-tr2').innerHTML += `<td>${aGpaStat.relativeCredit + aGpaStat.absoluteCredit}</td>`;
+        document.querySelector('#dynamic-tr3').innerHTML += `<td>${aGpaStat.getGpa(bool)}</td>`;
+      }
+
+      break;
+    case 4:
+      document.querySelector('#dynamic-tr4').innerHTML = `<th></th>`;
+      document.querySelector('#dynamic-tr5').innerHTML = `<td>이수학점</td>`;
+      document.querySelector('#dynamic-tr6').innerHTML = `<td>평점</td>`;
+
+      gpa.semesters.forEach((value, index, ary) => {
+        document.querySelector('#dynamic-tr4').innerHTML += `<th>${value.id}</th>`;
+        document.querySelector('#dynamic-tr5').innerHTML += `<td>${value.relativeCredit + value.absoluteCredit}</td>`;
+        document.querySelector('#dynamic-tr6').innerHTML += `<td>${value.getGpa(bool)}</td>`;
+      });
+
+      break;
   }
 }
 
@@ -265,6 +290,8 @@ radioBtns.forEach((value, key, parent) => {
   value.addEventListener('change', event => {
     if (event.target.id === 'option1' || event.target.id === 'option2') updateDiagnosis();
     else if (event.target.id === 'option3' || event.target.id === 'option4') updateBoard(2);
+    else if (event.target.id === 'option5' || event.target.id === 'option6') updateBoard(3);
+    else if (event.target.id === 'option7' || event.target.id === 'option8') updateBoard(4);
   });
 });
 
@@ -274,9 +301,9 @@ const noticeBtns = document.querySelectorAll('.fa-question-circle');
 noticeBtns.forEach((value, key, parent) => {
   value.addEventListener('click', event => {
     const noticeSection = document.querySelector("#notice" + event.target.dataset.order);
-    if (noticeSection.style.display === "") // display: none
-      noticeSection.style.display = "block";
-    else // noticeSection.style.display === "block"
-      noticeSection.style.display = "none";
+    if (noticeSection.style.display === '') // display: none
+      noticeSection.style.display = 'block';
+    else // noticeSection.style.display === 'block'
+      noticeSection.style.display = "";
   });
 });

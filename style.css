@@ -148,6 +148,10 @@ article {
   overflow: auto;
 }
 
+.dynamic-table-container {
+  display: none;
+}
+
 table {
   border-collapse: collapse;
   border: 1.5px solid var(--color-knu-red);
@@ -155,13 +159,10 @@ table {
   color: var(--color-letter-black);
 }
 
-.dynamic-table-container {
-  display: none;
-}
-
 th,
 td {
   padding: 4px 32px;
+  white-space: nowrap;
 }
 
 th {
@@ -200,4 +201,16 @@ td {
 
 .notice a {
   color: var(--color-knu-dark-red);
+}
+
+footer {
+  margin: 96px 32px 48px 32px;
+  text-align: center;
+  font-family: var(--font-nanum-gothic);
+  font-size: 0.75rem;
+  color: var(--color-dark-gray;);
+}
+
+footer p {
+  margin: 4px 0;
 }

@@ -26,7 +26,7 @@
 
 - [x] **4.5 만점** 평점
 - [x] 교양/전공, CLTR/Non-CLTR 평점
-- [ ] `교과구분` 평점
+- [x] `교과구분` 평점
 - [x] 평점 진단
 
 ### 4. 추가할 기능
@@ -43,7 +43,7 @@ $ git clone https://github.com/timo-nam/marbled-hobanu.git
 
 ## 😄 Usage
 
-[Notion]()
+[Notion](https://www.notion.so/30-149fc62a168f473191abbb2daae8443d)
 
 ## 🔨 Contributing
 
