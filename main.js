@@ -99,6 +99,12 @@ reportInput.addEventListener('change', event => {
     }
   }
 
+  // last validation
+  if (courses[courses.length - 1].grade === '') {
+    alert(wrongReportInputMsg);
+    return; // 
+  }
+  // else
   updateValues();
 });
 
