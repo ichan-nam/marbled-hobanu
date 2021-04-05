@@ -25,7 +25,7 @@ class gpaStat {
   }
 
   getGpa(option) {
-    if (this.relativeCredit + this.garbageCredit === 0) return (0.).toFixed(2);
+    if (this.relativeCredit + this.absoluteCredit === 0) return (0.).toFixed(2);
     // else
     const pointSum = option ? this.pointSum.endsWith5 : this.pointSum.endsWith3; // option is true: 4.5 / false: 4.3
     return pointSum === 0 ? 'SU과목' : (Math.floor(pointSum / (this.relativeCredit + this.garbageCredit) * 100) / 100.).toFixed(2);
