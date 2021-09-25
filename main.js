@@ -41,7 +41,7 @@ reportInput.addEventListener('change', event => {
   initializeGpa();
 
   const tmpTokens = reportInput.value.split('\t');
-  
+
   // dragged range validation
   if (tmpTokens[0] !== '년도/학기' && !tmpTokens[0].startsWith('20')) {
     alert(wrongReportInputMsg);
@@ -234,15 +234,23 @@ function updateDiagnosis() {
   let diagnosis;
 
   if (document.querySelector('#option1').checked) {
-    if (gpaEndsWith5 >= 4.0) diagnosis = '🥰';
-    else if (gpaEndsWith5 >= 3.8) diagnosis = '😃';
-    else if (gpaEndsWith5 >= 3.5) diagnosis = '🙂';
-    else diagnosis = '🤡'; // gpaEndsWith3 < 3.5
+    if (isNaN(gpaEndsWith5)) { // there are no relative evaluated courses
+      diagnosis = '❔';
+    } else {
+      if (gpaEndsWith5 >= 4.0) diagnosis = '🥰';
+      else if (gpaEndsWith5 >= 3.8) diagnosis = '😃';
+      else if (gpaEndsWith5 >= 3.5) diagnosis = '🙂';
+      else diagnosis = '🤡'; // gpaEndsWith3 < 3.5
+    }
   } else if (document.querySelector('#option2').checked) {
-    if (gpaEndsWith5 >= 3.8) diagnosis = '🥰';
-    else if (gpaEndsWith5 >= 3.5) diagnosis = '😃';
-    else if (gpaEndsWith5 >= 3.0) diagnosis = '🙂';
-    else diagnosis = '🤡'; // gpaEndsWith3 < 3.0
+    if (isNaN(gpaEndsWith5)) { // there are no relative evaluated courses
+      diagnosis = '❔';
+    } else {
+      if (gpaEndsWith5 >= 3.8) diagnosis = '🥰';
+      else if (gpaEndsWith5 >= 3.5) diagnosis = '😃';
+      else if (gpaEndsWith5 >= 3.0) diagnosis = '🙂';
+      else diagnosis = '🤡'; // gpaEndsWith3 < 3.0
+    }
   } else {
     diagnosis = '계열선택👆';
   }
@@ -255,7 +263,7 @@ function updateBoard(order) {
   // else
   const bool = document.querySelector('#option' + (2 * order - 1)).checked ? false : true;
 
-  switch(order) {
+  switch (order) {
     case 2:
       document.querySelector('#value7').innerText = gpa.types1.art.getGpa(bool);
       document.querySelector('#value8').innerText = gpa.types1.major.getGpa(bool);
